@@ -1,0 +1,24 @@
+{
+  "providers": [
+    {
+      "match": "^https://readmanganato.com",
+      "feedTitle": { "selector": "div.story-info-right > h1"},
+      "items": { "selector": "ul.row-content-chapter > li" },
+      "title": { "selector" : "a.chapter-name" },
+      "link": { "selector": "a.chapter-name", "attr": "href" },
+      "date": { "selector": "span.chapter-time", "attr": "title", "dateFormat": "M d,Y H:i" }
+    },
+    {
+      "match": "^https://isekaiscan.com",
+      "feedTitle": { "selector": "div.post-title > h1"},
+      "items": { "selector": "ul.row-content-chapter > li" },
+      "title": { "selector" : "a" },
+      "link": { "selector": "a", "attr": "href" },
+      "date": { "selector": "span.chapter-release-date", "dateFormat": "F d, Y" }
+    }
+  ],
+  "urls": [
+    "https://readmanganato.com/manga-mj990066",
+    "https://readmanganato.com/manga-at977876"
+  ]
+}
