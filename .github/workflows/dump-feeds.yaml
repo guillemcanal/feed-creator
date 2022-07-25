@@ -48,3 +48,9 @@ jobs:
           commit_message: "Updated feeds"
           file_pattern: docs/*.atom
 
+      - name: "Deploy to Gihub Pages"
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
+          branch: docs
+
