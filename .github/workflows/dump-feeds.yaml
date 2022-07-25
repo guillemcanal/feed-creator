@@ -1,0 +1,50 @@
+name: "Dump Feeds"
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  fail-fast: true
+
+jobs:
+  dump-feeds:
+    name: "Dump feeds"
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v2.3.3
+
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@2.7.0
+        with:
+          coverage: "none"
+          extensions: "intl, mbstring"
+          php-version: 8.1
+          tools: composer:v2
+
+      - name: "Set composer cache directory"
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: "Cache composer"
+        uses: actions/cache@v2.1.2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: "Install dependencies"
+        run: composer install --no-dev
+
+      - name: "Generate Feeds"
+        run: composer dump-feeds
+
+      - name: "Commit feeds"
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Updated feeds"
+          file_pattern: docs/*.atom
+
