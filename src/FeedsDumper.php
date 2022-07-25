@@ -12,7 +12,7 @@ class FeedsDumper
         private ?Filesystem $filesystem = null,
     )
     {
-        $this->feedsDirectory ??= dirname(__DIR__) . '/public';
+        $this->feedsDirectory ??= dirname(__DIR__) . '/docs';
         $this->filesystem ??= new LocalFilesystem();
     }
 
