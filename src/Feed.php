@@ -33,6 +33,7 @@ class Feed
             $entry->setLink($entryData->link);
             $entry->setDateModified($entryData->creationDate);
             $entry->setDateCreated($entryData->creationDate);
+            $entryData->description->ifPresent(fn(string $s) => $entry->setDescription($s));
             $feed->addEntry($entry);
         }
 

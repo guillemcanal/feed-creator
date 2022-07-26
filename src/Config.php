@@ -48,6 +48,7 @@ class Config
                         title: self::toExtractor('title', $provider),
                         link: self::toExtractor('link', $provider),
                         date: self::toExtractor('date', $provider),
+                        description: self::toExtractor('description', $provider),
                     );
                 },
                 $data['providers'] ?? [],

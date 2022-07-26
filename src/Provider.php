@@ -13,6 +13,7 @@ class Provider
      * @param Extractor<string> $title
      * @param Extractor<string> $link
      * @param Extractor<\DateTimeImmutable> $date
+     * @param Extractor<string> $description
      */
     public function __construct(
         public readonly Matcher   $matcher,
@@ -21,6 +22,7 @@ class Provider
         public readonly Extractor $title,
         public readonly Extractor $link,
         public readonly Extractor $date,
+        public readonly Extractor $description,
     )
     {}
 }

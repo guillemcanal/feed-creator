@@ -30,11 +30,15 @@ class FeedCreator
                     link: $this->provider->link
                         ->extractFrom($item)
                         ->orElseThrow(new \LogicException('Unable to extract the entry\'s link')),
+                    description: $this->provider->description
+                        ->extractFrom($item),
                     creationDate: $this->provider->date
                         ->extractFrom($item)
                         ->orElseThrow(new \LogicException('Unable to extract the entry\'s creationDate')),
                 ),
-                $this->provider->items->extractFrom($crawler)->get()
+                $this->provider->items
+                    ->extractFrom($crawler)
+                    ->orElseThrow(new \LogicException('Unable to extract the feed\'s items'))
             ),
         );
     }

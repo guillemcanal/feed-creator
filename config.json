@@ -7,12 +7,22 @@
       "title": { "selector" : "a.chapter-name" },
       "link": { "selector": "a.chapter-name", "attr": "href" },
       "date": { "selector": "span.chapter-time", "attr": "title", "dateFormat": "M d,Y H:i" }
+    },
+    {
+      "match": "^https://nyaa.si",
+      "feedTitle": { "selector": "input[name=q]", "attr": "value" },
+      "items": { "selector": "table.torrent-list tbody > tr" },
+      "title": { "selector" : "td:nth-child(2) a:nth-child(2)" },
+      "link": { "selector": "td:nth-child(2) a:nth-child(1)", "attr": "href" },
+      "description": { "selector": "td:nth-child(3) a:nth-child(2)", "attr": "href" },
+      "date": { "selector": "td:nth-child(5)", "attr": "data-timestamp", "dateFormat": "U" }
     }
   ],
   "urls": [
     "https://readmanganato.com/manga-mj990066",
     "https://readmanganato.com/manga-at977876",
     "https://readmanganato.com/manga-bw979131",
-    "https://readmanganato.com/manga-iw985379"
+    "https://readmanganato.com/manga-iw985379",
+    "https://nyaa.si/?f=0&c=1_2&q=%5BSubsPlease%5D+Overlord+IV+1080"
   ]
 }

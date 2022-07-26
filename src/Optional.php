@@ -15,8 +15,8 @@ final class Optional
     }
 
     /**
-     * @throws \Throwable When the value is empty
      * @return T
+     * @throws \Throwable When the value is empty
      */
     public function orElseThrow(\Throwable $e): mixed
     {
@@ -27,17 +27,35 @@ final class Optional
         return $this->value;
     }
 
-    public function map(callable $fn): self
+    /**
+     * @param callable(T): void $fn
+     */
+    public function ifPresent(callable $fn): void
     {
-       if ($this->value) {
-           return Optional::of($fn($this->value));
-       }
-
-       return Optional::empty();
+        if ($this->value !== null) {
+            $fn($this->value);
+        }
     }
 
     /**
      * @template S
+     * @param callable(T):S $fn
+     *
+     * @return self<S>
+     */
+    public function map(callable $fn): self
+    {
+        if ($this->value) {
+            return Optional::of($fn($this->value));
+        }
+
+        return Optional::empty();
+    }
+
+    /**
+     * @template S
+     * @param S $value
+     *
      * @return self<S>
      */
     public static function of(mixed $value): self
@@ -51,12 +69,14 @@ final class Optional
     }
 
     /**
-     * @return T
+     * @template S
+     * @param S $other
+     * @return T|S
      */
-    public function get()
+    public function orElse(mixed $other): mixed
     {
         if (!$this->value) {
-            throw new \LogicException('No such element');
+            return $other;
         }
 
         return $this->value;
