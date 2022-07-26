@@ -4,6 +4,7 @@ namespace Gcanal\FeedCreator;
 
 use Gcanal\FeedCreator\Extractor\DateExtractor;
 use Gcanal\FeedCreator\Extractor\ElementsExtractor;
+use Gcanal\FeedCreator\Extractor\HtmlExtractor;
 use Gcanal\FeedCreator\Extractor\ValueExtractor;
 use Gcanal\FeedCreator\Extractor\Extractor;
 
@@ -72,6 +73,11 @@ class Config
                 $data[$name]['selector'] ?? null,
                 $data[$name]['attr'] ?? null,
                 $data[$name]['dateFormat'] ?? null,
+            ),
+            'description' => new HtmlExtractor(
+                $data[$name]['selector'] ?? null,
+                $data[$name]['attr'] ?? null,
+                $data[$name]['template'] ?? null,
             ),
             default => new ValueExtractor(
                 $data[$name]['selector'] ?? null,

@@ -86,7 +86,6 @@ class FeedsDumper
                 $reader->getTitle(),
                 $reader->getDateModified()->format(\DateTime::ATOM),
                 $reader->getDateModified()->format('Y-m-d H:i:s'),
-
             );
         }
 
