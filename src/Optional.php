@@ -15,8 +15,12 @@ final class Optional
     }
 
     /**
+     * @template E of \Throwable
+     * @param E $e
+     *
      * @return T
-     * @throws \Throwable When the value is empty
+     *
+     * @throws E When the value is empty
      */
     public function orElseThrow(\Throwable $e): mixed
     {

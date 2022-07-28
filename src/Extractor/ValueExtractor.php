@@ -21,13 +21,21 @@ class ValueExtractor implements Extractor
         if (!$this->selector) {
             return Optional::empty();
         }
-
-        $node = $crawler->filter($this->selector);
-        $value = $node->text();
-        if ($this->attr) {
-            $value = $node->attr($this->attr);
+        
+        try {
+            $node = $crawler->filter($this->selector);
+            $value = $node->text();
+            if ($this->attr) {
+                $value = $node->attr($this->attr);
+            }
+        } catch (\Throwable $e) {
+            throw new \LogicException(
+                sprintf('Unable to extract %s from %s', $this->selector, $crawler->html()),
+                $e->getCode(),
+                $e,
+            );
         }
-
+        
         return Optional::of($value);
     }
 }

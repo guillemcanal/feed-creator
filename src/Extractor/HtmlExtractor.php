@@ -19,16 +19,24 @@ class HtmlExtractor implements Extractor
             return Optional::empty();
         }
 
-        $value = $crawler->filter($this->selector);
-        if ($this->attr) {
-            $value = $value->attr($this->attr);
-            if ($this->template) {
-                $value = sprintf($this->template, $value);
+        try {
+            $value = $crawler->filter($this->selector);
+            if ($this->attr) {
+                $value = $value->attr($this->attr);
+                if ($this->template) {
+                    $value = sprintf($this->template, $value);
+                }
+            } else {
+                $value = $value->outerHtml();
             }
-        } else {
-            $value = $value->outerHtml();
+        } catch (\Throwable $e) {
+            throw new \LogicException(
+                sprintf('Unable to extract %s from %s', $this->selector, $crawler->html()),
+                $e->getCode(),
+                $e,
+            );
         }
-
+        
         return Optional::of($value);
     }
 }

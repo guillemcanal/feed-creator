@@ -12,8 +12,8 @@
       "match": "^https://nyaa.si",
       "feedTitle": { "selector": "input[name=q]", "attr": "value" },
       "items": { "selector": "table.torrent-list tbody > tr" },
-      "title": { "selector" : "td:nth-child(2) a:nth-child(2)" },
-      "link": { "selector": "td:nth-child(2) a:nth-child(1)", "attr": "href" },
+      "title": { "selector" : "td:nth-child(2) a[href^=\"/view/\"]:not([href$=\"#comments\"])" },
+      "link": { "selector": "td:nth-child(2) a[href^=\"/view/\"]:not([href$=\"#comments\"])", "attr": "href" },
       "date": { "selector": "td:nth-child(5)", "attr": "data-timestamp", "dateFormat": "U" },
       "description": { "selector": "td:nth-child(3) a:nth-child(2)", "attr": "href", "template": "<a href=\"%s\">magnet link</a>" }
     }
@@ -23,6 +23,8 @@
     "https://readmanganato.com/manga-at977876",
     "https://readmanganato.com/manga-bw979131",
     "https://readmanganato.com/manga-iw985379",
-    "https://nyaa.si/?f=0&c=1_2&q=%5BSubsPlease%5D+Overlord+IV+1080"
+    "https://nyaa.si/?f=0&c=1_2&q=%5BSubsPlease%5D+Overlord+IV+1080",
+    "https://nyaa.si/?q=%5BErai-raws%5D+Isekai+Ojisan+1080&f=0&c=1_2",
+    "https://nyaa.si/?q=%5BErai-raws%5D+Yofukashi+no+Uta+1080&f=0&c=1_2"
   ]
 }

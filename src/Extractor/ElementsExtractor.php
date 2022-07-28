@@ -17,7 +17,16 @@ class ElementsExtractor implements Extractor
 
     public function extractFrom(Crawler $crawler): Optional
     {
-        $items = $crawler->filter($this->selector)->each(fn(Crawler $crawler) => $crawler);
+        try {
+            $items = $crawler->filter($this->selector)->each(fn(Crawler $crawler) => $crawler);
+        } catch (\Throwable $e) {
+            throw new \LogicException(
+                sprintf('Unable to extract %s from %s', $this->selector, $crawler->html()),
+                $e->getCode(),
+                $e,
+            );
+        }
+        
         if (!count($items)) {
             return Optional::empty();
         }
