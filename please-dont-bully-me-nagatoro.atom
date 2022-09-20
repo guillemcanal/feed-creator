@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">Please Don't Bully Me, Nagatoro</title>
-  <updated>2022-09-06T02:09:00+00:00</updated>
+  <updated>2022-09-20T04:09:00+00:00</updated>
   <generator uri="https://getlaminas.org" version="2">Laminas_Feed_Writer</generator>
   <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876"/>
   <link rel="self" type="application/atom+xml" href="http://localhost"/>
   <id>https://readmanganato.com/manga-at977876</id>
+  <entry>
+    <title type="html"><![CDATA[Chapter 113: Take Good Care Of Me, Senpai ♥]]></title>
+    <published>2022-09-20T04:09:00+00:00</published>
+    <updated>2022-09-20T04:09:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-113"/>
+    <id>https://readmanganato.com/manga-at977876/chapter-113</id>
+  </entry>
   <entry>
     <title type="html"><![CDATA[Chapter 112]]></title>
     <published>2022-09-06T02:09:00+00:00</published>
@@ -138,6 +145,13 @@
     <updated>2021-12-07T05:12:00+00:00</updated>
     <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-95"/>
     <id>https://readmanganato.com/manga-at977876/chapter-95</id>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Chapter 94.5]]></title>
+    <published>2022-09-06T13:09:00+00:00</published>
+    <updated>2022-09-06T13:09:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-94.5"/>
+    <id>https://readmanganato.com/manga-at977876/chapter-94.5</id>
   </entry>
   <entry>
     <title type="html"><![CDATA[Chapter 94: Ah, Senpai... This Guy Is...]]></title>
@@ -707,6 +721,13 @@
     <id>https://readmanganato.com/manga-at977876/chapter-27</id>
   </entry>
   <entry>
+    <title type="html"><![CDATA[Chapter 26.5]]></title>
+    <published>2022-09-06T13:09:00+00:00</published>
+    <updated>2022-09-06T13:09:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-26.5"/>
+    <id>https://readmanganato.com/manga-at977876/chapter-26.5</id>
+  </entry>
+  <entry>
     <title type="html"><![CDATA[Vol.4 Chapter 26: This Looks Kinda Like A Date, Senpai!]]></title>
     <published>2019-08-25T02:08:00+00:00</published>
     <updated>2019-08-25T02:08:00+00:00</updated>
@@ -861,6 +882,13 @@
     <id>https://readmanganato.com/manga-at977876/chapter-13</id>
   </entry>
   <entry>
+    <title type="html"><![CDATA[Chapter 12.5]]></title>
+    <published>2022-09-06T13:09:00+00:00</published>
+    <updated>2022-09-06T13:09:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-12.5"/>
+    <id>https://readmanganato.com/manga-at977876/chapter-12.5</id>
+  </entry>
+  <entry>
     <title type="html"><![CDATA[Vol.2 Chapter 12: Senpai, Let's Play A Game!]]></title>
     <published>2019-08-25T02:08:00+00:00</published>
     <updated>2019-08-25T02:08:00+00:00</updated>
@@ -922,6 +950,13 @@
     <updated>2019-08-25T02:08:00+00:00</updated>
     <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-9"/>
     <id>https://readmanganato.com/manga-at977876/chapter-9</id>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Chapter 8.5]]></title>
+    <published>2022-09-06T13:09:00+00:00</published>
+    <updated>2022-09-06T13:09:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-8.5"/>
+    <id>https://readmanganato.com/manga-at977876/chapter-8.5</id>
   </entry>
   <entry>
     <title type="html"><![CDATA[Vol.1 Chapter 8.3: Extra]]></title>
@@ -999,6 +1034,13 @@
     <updated>2019-08-25T02:08:00+00:00</updated>
     <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-3"/>
     <id>https://readmanganato.com/manga-at977876/chapter-3</id>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Chapter 2.5]]></title>
+    <published>2022-09-06T13:09:00+00:00</published>
+    <updated>2022-09-06T13:09:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-at977876/chapter-2.5"/>
+    <id>https://readmanganato.com/manga-at977876/chapter-2.5</id>
   </entry>
   <entry>
     <title type="html"><![CDATA[Vol.1 Chapter 2: Watching You Is So Fun!]]></title>
