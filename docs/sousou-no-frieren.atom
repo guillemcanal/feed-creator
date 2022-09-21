@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">Sousou No Frieren</title>
-  <updated>2022-08-31T07:08:00+00:00</updated>
+  <updated>2022-09-21T07:09:00+00:00</updated>
   <generator uri="https://getlaminas.org" version="2">Laminas_Feed_Writer</generator>
   <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-iw985379"/>
   <link rel="self" type="application/atom+xml" href="http://localhost"/>
   <id>https://readmanganato.com/manga-iw985379</id>
+  <entry>
+    <title type="html"><![CDATA[Chapter 100: The Fundamentals Of A Mage]]></title>
+    <published>2022-09-21T07:09:00+00:00</published>
+    <updated>2022-09-21T07:09:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-iw985379/chapter-100"/>
+    <id>https://readmanganato.com/manga-iw985379/chapter-100</id>
+  </entry>
   <entry>
     <title type="html"><![CDATA[Chapter 99]]></title>
     <published>2022-08-31T07:08:00+00:00</published>
@@ -14,11 +21,25 @@
     <id>https://readmanganato.com/manga-iw985379/chapter-99</id>
   </entry>
   <entry>
+    <title type="html"><![CDATA[Chapter 98.5]]></title>
+    <published>2022-08-31T12:08:00+00:00</published>
+    <updated>2022-08-31T12:08:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-iw985379/chapter-98.5"/>
+    <id>https://readmanganato.com/manga-iw985379/chapter-98.5</id>
+  </entry>
+  <entry>
     <title type="html"><![CDATA[Chapter 98.2]]></title>
     <published>2022-08-18T14:08:00+00:00</published>
     <updated>2022-08-18T14:08:00+00:00</updated>
     <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-iw985379/chapter-98.2"/>
     <id>https://readmanganato.com/manga-iw985379/chapter-98.2</id>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Chapter 98.1]]></title>
+    <published>2022-08-31T12:08:00+00:00</published>
+    <updated>2022-08-31T12:08:00+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://readmanganato.com/manga-iw985379/chapter-98.1"/>
+    <id>https://readmanganato.com/manga-iw985379/chapter-98.1</id>
   </entry>
   <entry>
     <title type="html"><![CDATA[Chapter 98: Reward & Retribution]]></title>
