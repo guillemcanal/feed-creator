@@ -1,0 +1,127 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "Config",
+    "type": "object",
+    "required": [
+        "providers",
+        "urls"
+    ],
+    "properties": {
+        "providers": {
+            "title": "Providers",
+            "type": "array",
+            "description": "A list of content extraction providers",
+            "minItems": 1,
+            "items": { 
+                "$ref": "#/definitions/provider" 
+            }
+        },
+        "urls": {
+            "title": "URLs",
+            "type": "array",
+            "description": "A list of URL used to generate Atom feeds.",
+            "minItems": 1,
+            "items": {
+                "type": "string",
+                "format": "uri"
+            }
+        }
+    },
+    "definitions": {
+        "provider": {
+            "title": "Provider",
+            "type": "object",
+            "description": "Provide CSS selectors to extract content from a page and help generate an Atom feed.",
+            "required": [
+                "match",
+                "feedTitle",
+                "items",
+                "title",
+                "link",
+                "date"
+            ],
+            "properties": {
+                "match": {
+                    "type": "string",
+                    "description": "A regex matching a feed URL",
+                    "examples": ["^https:\/\/\\w+.wikipedia.org"]
+                },
+                "feedTitle": {
+                    "description": "Used to generate the title of the feed",
+                    "$ref": "#/definitions/selector"
+                },
+                "items": {
+                    "description": "Used to retreive items for the feed",
+                    "$ref": "#/definitions/selector"
+                },
+                "title": {
+                    "description": "Used to generate the title of an item",
+                    "$ref": "#/definitions/selector"
+                },
+                "link": {
+                    "description": "Used to generate the URL of an item",
+                    "$ref": "#/definitions/selector"
+                },
+                "date": {
+                    "description": "Used to generate the published and updated attribute of an item",
+                    "$ref": "#/definitions/selectorWithDateFormat"
+                },
+                "description": {
+                    "description": "Used to generate the description of an item",
+                    "$ref": "#/definitions/selectorWithTemplate"
+                }
+            }
+        },
+        "selector": {
+            "title": "Selector",
+            "type": "object",
+            "required": ["selector"],
+            "properties": {
+                "selector": {
+                    "type": "string",
+                    "description": "A string containing one or more CSS selectors to match against.",
+                    "examples": [".wp-content > h1"]
+                },
+                "attr": {
+                    "type": "string",
+                    "description": "Extract the content of a given attribute instead of the content of the element that matched the CSS selectors.",
+                    "examples": ["href", "title"]
+                }
+            }
+        },
+        "selectorWithDateFormat": {
+            "title": "SelectorWithDateFormat",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/selector" },
+                { 
+                    "type": "object", 
+                    "properties": {
+                        "dateFormat": {
+                            "type": "string",
+                            "description": "Use a date format the create a datetime object from the element that matched the CSS selectors.",
+                            "examples": ["M d,Y H:i", "U"]
+                        }
+                    }
+                }
+            ]
+        },
+        "selectorWithTemplate": {
+            "title": "SelectorWithTemplate",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/selector" },
+                { 
+                    "type": "object", 
+                    "properties": {
+                        "template": {
+                            "type": "string",
+                            "description": "Decorate the extracted text from the element that matched the CSS selectors.",
+                            "examples": ["<a href=\"%s\">magnet link</a>"]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

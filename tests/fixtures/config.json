@@ -1,0 +1,14 @@
+{
+    "providers": [
+        {
+            "match": "demo.html$",
+            "feedTitle": { "selector": "h1"},
+            "items": { "selector": "ul > li" },
+            "title": { "selector" : "a > div.title" },
+            "link": { "selector": "a", "attr": "href" },
+            "date": { "selector": "time", "attr": "datetime"},
+            "description": {"selector": "a > div.description", "template": "<strong>%s</strong>"}
+          }
+    ],
+    "urls": []
+}

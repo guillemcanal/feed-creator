@@ -1,0 +1,4 @@
+/.phpunit.*
+/vendor
+/.idea
+/config.json
