@@ -10,15 +10,12 @@ class FeedCreator
 {
     public function __construct(
         private readonly Provider    $provider,
-        private readonly ?Filesystem $filesystem = new LocalFilesystem(),
+        private readonly Filesystem $filesystem = new LocalFilesystem(),
     )
     {
     }
 
     /**
-     * @param string $url
-     * @return Feed
-     *
      * @throws LogicException When a value cannot be extracted
      */
     public function getFeed(string $pageURL): Feed

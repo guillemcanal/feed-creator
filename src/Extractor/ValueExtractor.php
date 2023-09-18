@@ -6,7 +6,6 @@ use Gcanal\FeedCreator\Optional;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * @template T
  * @implements Extractor<string>
  */
 class ValueExtractor implements Extractor
@@ -26,8 +25,10 @@ class ValueExtractor implements Extractor
             $node = $crawler->filter($this->selector);
             $value = $node->text();
             if ($this->attr) {
-                $value = $node->attr($this->attr);
+                $value = $node->attr($this->attr) ?? '';
             }
+
+            return Optional::of($value);
         } catch (\Throwable $e) {
             throw new \LogicException(
                 sprintf('Unable to extract %s from %s', $this->selector, $crawler->html()),
@@ -35,7 +36,5 @@ class ValueExtractor implements Extractor
                 $e,
             );
         }
-        
-        return Optional::of($value);
     }
 }

@@ -3,86 +3,127 @@
 namespace Gcanal\FeedCreator;
 
 /**
- * @template T
+ * @template-covariant T
  */
-final class Optional
+class Optional
 {
+    /**
+     * @var T|never
+	 */
+    private $value;
+
     /**
      * @param T $value
      */
-    private final function __construct(private readonly mixed $value = null)
+    private function __construct($value = null)
     {
+        $this->value = $value;
     }
 
     /**
-     * @template E of \Throwable
-     * @param E $e
-     *
-     * @return T
-     *
-     * @throws E When the value is empty
+     * @template U
+     * @param U $value
+	 * @phpstan-assert !null $value
+     * @return Optional<U>
      */
-    public function orElseThrow(\Throwable $e): mixed
+    public static function of(mixed $value): Optional
     {
-        if (!$this->value) {
-            throw $e;
-        }
-
-        return $this->value;
+		if ($value === null) {
+			throw new \LogicException('The value souldn\'t be null');
+		}
+		
+        return new self($value);
     }
 
     /**
-     * @param callable(T): void $fn
+     * @template U
+     * @param U $value
+     * @return Optional<U>
      */
+    public static function ofNullable($value): Optional
+    {
+		return $value !== null ? self::of($value) : self::empty();
+    }
+
+    /**
+     * @return Optional<never>
+     */
+    public static function empty(): Optional
+    {
+		/** @var self<never> $never */
+		$never = new self();
+		
+		return $never;
+    }
+
+    /**
+     * Check if the Optional has a value.
+     *
+     * @return bool
+     */
+    public function isPresent(): bool
+    {
+        return $this->value !== null;
+    }
+
     public function ifPresent(callable $fn): void
     {
-        if ($this->value !== null) {
+        if ($this->value) {
             $fn($this->value);
         }
     }
 
+	/**
+	 * @return T
+	 */
+	public function get(): mixed
+	{
+		if ($this->value === null) {
+			throw new \LogicException('value is empty');
+		}
+
+		return $this->value;
+	}
+
     /**
-     * @template S
-     * @param callable(T):S $fn
-     *
-     * @return self<S>
+	 * @template U
+     * @param U $defaultValue
+	 *
+     * @return T|U
      */
-    public function map(callable $fn): self
+    public function orElse($defaultValue): mixed
     {
-        if ($this->value) {
-            return Optional::of($fn($this->value));
+		if ($defaultValue === null) {
+			throw new \LogicException('The default value shouldn\'t be null');
+		}
+		
+		return $this->value !== null ? $this->value : $defaultValue;
+    }
+
+    /** 
+     * @template E of \Throwable
+     * @param E $exception
+     * @throws E
+     * 
+     * @return T 
+     */
+    public function orElseThrow(\Throwable $exception): mixed
+    {
+		if ($this->value) {
+            return $this->value;
         }
-
-        return Optional::empty();
+		
+        throw $exception;
     }
+
 
     /**
-     * @template S
-     * @param S $value
-     *
-     * @return self<S>
+     * @template U
+     * @param callable(T): U $mapper
+     * @return Optional<U>
      */
-    public static function of(mixed $value): self
+    public function map(callable $mapper): Optional
     {
-        return new self($value);
-    }
-
-    public static function empty(): self
-    {
-        return new self(null);
-    }
-
-    /**
-     * @template S
-     * @param S $other
-     * @return T|S
-     */
-    public function orElse(mixed $other): mixed
-    {
-        if (!$this->value) {
-            return $other;
-        }
-
-        return $this->value;
+		return $this->value !== null ? self::of($mapper($this->value)) : self::empty();
     }
 }

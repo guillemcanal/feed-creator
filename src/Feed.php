@@ -16,7 +16,8 @@ class Feed
         public readonly array  $entries,
     )
     {
-        $this->dateModified = $this->entries[0]?->creationDate ?? new \DateTimeImmutable();
+        $entry = current($this->entries);
+        $this->dateModified = $entry ? $entry->creationDate : new \DateTimeImmutable();
     }
 
     public function toAtom(): string

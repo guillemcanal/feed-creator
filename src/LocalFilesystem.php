@@ -6,7 +6,7 @@ class LocalFilesystem implements Filesystem
 {
     public function getContents(string $filename): string
     {
-        return file_get_contents($filename);
+        return @file_get_contents($filename) ?: throw new \RuntimeException('Unable to retreive ' . $filename);
     }
 
     public function putContents(string $filename, string $data): void

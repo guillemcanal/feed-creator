@@ -6,7 +6,6 @@ use Gcanal\FeedCreator\Optional;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * @template T
  * @implements Extractor<\DateTimeImmutable>
  */
 class DateExtractor implements Extractor
@@ -31,7 +30,16 @@ class DateExtractor implements Extractor
     private function toDate(string $value): \DateTimeImmutable
     {
         return $this->dateFormat 
-            ? \DateTimeImmutable::createFromFormat($this->dateFormat, $value)
+            ? (
+                \DateTimeImmutable::createFromFormat($this->dateFormat, $value) 
+                ?: throw new \RuntimeException(
+                    sprintf(
+                        'Cannot parse "%s" with format "%s"',
+                        $value,
+                        $this->dateFormat,
+                    )
+                )
+            )
             : new \DateTimeImmutable($value); 
     }
 }

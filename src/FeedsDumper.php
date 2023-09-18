@@ -2,51 +2,64 @@
 
 namespace Gcanal\FeedCreator;
 
+use Gcanal\FeedCreator\Opml as Opml;
 use Laminas\Feed\Reader\Reader;
 
 class FeedsDumper
 {
+    private Filesystem $filesystem;
+
     public function __construct(
         private readonly Config $config,
-        private string $feedsDirectory,
-        private ?Filesystem $filesystem = null,
+        private readonly string $feedsDirectory,
+        ?Filesystem $filesystem = null,
     ) {
         if (!file_exists($feedsDirectory) || !is_dir($feedsDirectory)) {
             throw new \InvalidArgumentException($feedsDirectory . ' doesn\'t exist.');
         }
 
-        $this->filesystem ??= new LocalFilesystem();
+        $this->filesystem = $filesystem ?? new LocalFilesystem();
     }
 
     public function dump(): void
     {
+        /** @var Feed[] */
+        $feeds = [];
         foreach ($this->config->urls as $url) {
             $creator = new FeedCreator($this->config->getProviderFrom($url), $this->filesystem);
-            $feed = $creator->getFeed($url);
-            $feedFilename = $this->getFeedFilename($feed);
-            if ($this->feedShouldBeDumped($feedFilename, $feed)) {
-                $this->filesystem->putContents($feedFilename, $feed->toAtom());
-                printf("generated feed\n");
-            } else {
-                printf("feed already up to date\n");
-            }
+            $feeds[] = $feed = $creator->getFeed($url);
+            $this->filesystem->putContents($this->getFeedFilename($feed), $feed->toAtom());
         }
 
+        $this->createOpml($feeds);
         $this->updateIndex();
+    }
+
+    /** @param Feed[] $feeds */
+    private function createOpml(array $feeds): void
+    {
+        $opml = new Opml\Feed(
+            'Feed subcriptions',
+            ...array_map(
+                fn(Feed $feed): Opml\Outline => new Opml\Outline(
+                    title: $feed->title,
+                    xmlUrl: $this->getFeedFilename($feed),
+                    htmlUrl: $feed->link,
+                    scanDelay: Optional::of(90)
+                ),
+                $feeds,
+            )
+        );
+
+        $this->filesystem->putContents(
+            $this->feedsDirectory . '/subscrptions.opml',
+            $opml->toXML(),
+        );
     }
 
     private function getFeedFilename(Feed $feed): string
     {
         return $this->feedsDirectory . '/' . Transliterator::slugify($feed->title) . '.atom';
-    }
-
-    private function feedShouldBeDumped(string $feedFilename, Feed $feed): bool
-    {
-        if (!$this->filesystem->exists($feedFilename)) {
-            return true;
-        }
-
-        return Reader::importFile($feedFilename)->getDateModified() != $feed->dateModified;
     }
 
     private function updateIndex(): void
@@ -75,6 +88,7 @@ class FeedsDumper
 
         $entries = [];
         $directory = new \RecursiveDirectoryIterator($this->feedsDirectory, \FilesystemIterator::SKIP_DOTS);
+        /** @var \SplFileInfo $fileInfo */
         foreach ($directory as $fileInfo) {
             if ($fileInfo->getExtension() !== 'atom') {
                 continue;
@@ -86,8 +100,8 @@ class FeedsDumper
                 $entry,
                 './'.$fileInfo->getFilename(),
                 $reader->getTitle(),
-                $reader->getDateModified()->format(\DateTime::ATOM),
-                $reader->getDateModified()->format('Y-m-d H:i:s'),
+                $reader->getDateModified()?->format(\DateTime::ATOM) ?? '',
+                $reader->getDateModified()?->format('Y-m-d H:i:s') ?? '',
             );
         }
 

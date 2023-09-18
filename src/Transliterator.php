@@ -18,6 +18,9 @@ class Transliterator
             [-[:Separator:]]+ > '-';
         RULES;
 
-        return \Transliterator::createFromRules($rules)->transliterate($string);
+        /** @var \Transliterator $transliterator  */
+        $transliterator = \Transliterator::createFromRules($rules);
+
+        return $transliterator->transliterate($string) ?: throw new \RuntimeException('Cannot slugify ' . $string);
     }
 }

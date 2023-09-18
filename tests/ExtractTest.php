@@ -25,7 +25,9 @@ class ExtractTest extends TestCase
         assertThat($feed->title, equalTo('Page title'));
         assertThat($feed->entries, countOf(3));
 
+        /** @var Entry $firstEntry */
         $firstEntry = current($feed->entries);
+        assertThat($firstEntry, isInstanceOf(Entry::class));
         assertThat($firstEntry->title, equalTo('Item 3'));
         assertThat($firstEntry->link, equalTo(dirname($testPage).'/content?id=3'));
         assertThat($firstEntry->creationDate, isInstanceOf(\DateTimeImmutable::class));
@@ -48,11 +50,12 @@ class ExtractTest extends TestCase
         $entries = iterator_to_array($atomFeed);
         assertThat($entries, countOf(3));
         assertThat($entries, containsOnlyInstancesOf(EntryInterface::class));
-
+        /** @var EntryInterface $entry */
         $entry = current($entries);
+        assertThat($entry, isInstanceOf(EntryInterface::class));
         assertThat($entry->getTitle(), equalTo('Item 3'));
         assertThat($entry->getLink(), equalTo(dirname($testPage).'/content?id=3'));
         assertThat($entry->getDateCreated(), isInstanceOf(\DateTimeInterface::class));
-        assertThat($entry->getDateCreated()->format('Y-m-d H:i'), equalTo('2023-09-15 16:00'));
+        assertThat($entry->getDateCreated()?->format('Y-m-d H:i'), equalTo('2023-09-15 16:00'));
     }
 }

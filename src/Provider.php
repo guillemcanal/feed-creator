@@ -2,27 +2,22 @@
 
 namespace Gcanal\FeedCreator;
 
-use Gcanal\FeedCreator\Extractor\Extractor;
-use Symfony\Component\DomCrawler\Crawler;
+use Gcanal\FeedCreator\Extractor\DateExtractor;
+use Gcanal\FeedCreator\Extractor\ElementsExtractor;
+use Gcanal\FeedCreator\Extractor\HtmlExtractor;
+use Gcanal\FeedCreator\Extractor\ValueExtractor;
 
 class Provider
 {
-    /**
-     * @param Extractor<Crawler[]> $items
-     * @param Extractor<string> $feedTitle
-     * @param Extractor<string> $title
-     * @param Extractor<string> $link
-     * @param Extractor<\DateTimeImmutable> $date
-     * @param Extractor<string> $description
-     */
+
     public function __construct(
         public readonly Matcher   $matcher,
-        public readonly Extractor $feedTitle,
-        public readonly Extractor $items,
-        public readonly Extractor $title,
-        public readonly Extractor $link,
-        public readonly Extractor $date,
-        public readonly Extractor $description,
+        public readonly ValueExtractor $feedTitle,
+        public readonly ElementsExtractor $items,
+        public readonly ValueExtractor $title,
+        public readonly ValueExtractor $link,
+        public readonly DateExtractor $date,
+        public readonly HtmlExtractor $description,
     )
     {}
 }

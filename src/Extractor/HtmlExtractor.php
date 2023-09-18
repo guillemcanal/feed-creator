@@ -5,6 +5,9 @@ namespace Gcanal\FeedCreator\Extractor;
 use Gcanal\FeedCreator\Optional;
 use Symfony\Component\DomCrawler\Crawler;
 
+/**
+ * @implements Extractor<string>
+ */
 class HtmlExtractor implements Extractor
 {
     public function __construct(
@@ -37,6 +40,6 @@ class HtmlExtractor implements Extractor
             );
         }
         
-        return Optional::of($value);
+        return $value ? Optional::of($value) : Optional::empty();
     }
 }
