@@ -37,6 +37,7 @@
     ],
     "scripts": {
         "dump-feeds": "@php ./scripts/dump-feeds.php",
+        "analyse": "@php ./vendor/bin/phpstan analyse",
         "tests": "@php ./vendor/bin/phpunit"
     }
 }
