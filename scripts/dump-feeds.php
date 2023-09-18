@@ -14,7 +14,7 @@ if (!file_exists($config)) {
 $configData = json_decode(file_get_contents($config));
 $validator = new JsonSchema\Validator();
 $validator->validate(
-    $configData, 
+    $configData,
     (object)['$ref' => 'file://' . dirname(__DIR__) . '/config.schema.json']
 );
 if (!$validator->isValid()) {
@@ -27,9 +27,20 @@ if (!$validator->isValid()) {
 
 $feedsDirectory = getenv('FEEDS_DIRECTORY');
 if (!$feedsDirectory) {
-    printf("You must provide the environement variable FEEDS_DIRECTORY\n");
+    printf("You must provide the environment variable FEEDS_DIRECTORY\n");
     exit(2);
 }
 
-$feedsDumper = new FeedsDumper(Config::fromJSONFile($config), $feedsDirectory);
+$baseURL = getenv('BASE_URL');
+if (!$baseURL) {
+    printf("You must provide the environment variable BASE_URL\n");
+    exit(2);
+}
+
+$feedsDumper = new FeedsDumper(
+    Config::fromJSONFile($config),
+    $feedsDirectory,
+    $baseURL,
+);
+
 $feedsDumper->dump();

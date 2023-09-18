@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator;
 
 use Gcanal\FeedCreator\Extractor\DateExtractor;
@@ -7,9 +9,8 @@ use Gcanal\FeedCreator\Extractor\ElementsExtractor;
 use Gcanal\FeedCreator\Extractor\HtmlExtractor;
 use Gcanal\FeedCreator\Extractor\ValueExtractor;
 
-class Provider
+final class Provider
 {
-
     public function __construct(
         public readonly Matcher   $matcher,
         public readonly ValueExtractor $feedTitle,
@@ -18,6 +19,6 @@ class Provider
         public readonly ValueExtractor $link,
         public readonly DateExtractor $date,
         public readonly HtmlExtractor $description,
-    )
-    {}
+    ) {
+    }
 }

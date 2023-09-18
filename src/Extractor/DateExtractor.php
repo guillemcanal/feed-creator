@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator\Extractor;
 
 use Gcanal\FeedCreator\Optional;
@@ -8,13 +10,14 @@ use Symfony\Component\DomCrawler\Crawler;
 /**
  * @implements Extractor<\DateTimeImmutable>
  */
-class DateExtractor implements Extractor
+final class DateExtractor implements Extractor
 {
     public function __construct(
         public readonly ?string $selector = null,
         public readonly ?string $attr = null,
         public readonly ?string $dateFormat = null,
-    ) {}
+    ) {
+    }
 
     public function extractFrom(Crawler $crawler): Optional
     {
@@ -24,14 +27,14 @@ class DateExtractor implements Extractor
 
         return (new ValueExtractor($this->selector, $this->attr))
             ->extractFrom($crawler)
-            ->map(fn(string $value) => $this->toDate($value));
+            ->map(fn (string $value): \DateTimeImmutable => $this->toDate($value));
     }
 
     private function toDate(string $value): \DateTimeImmutable
     {
-        return $this->dateFormat 
+        return $this->dateFormat
             ? (
-                \DateTimeImmutable::createFromFormat($this->dateFormat, $value) 
+                \DateTimeImmutable::createFromFormat($this->dateFormat, $value)
                 ?: throw new \RuntimeException(
                     sprintf(
                         'Cannot parse "%s" with format "%s"',
@@ -40,6 +43,6 @@ class DateExtractor implements Extractor
                     )
                 )
             )
-            : new \DateTimeImmutable($value); 
+            : new \DateTimeImmutable($value);
     }
 }

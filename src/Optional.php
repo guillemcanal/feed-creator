@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator;
 
 /**
  * @template-covariant T
  */
-class Optional
+final class Optional
 {
     /**
      * @var T|never
-	 */
+     */
     private $value;
 
     /**
@@ -23,15 +25,15 @@ class Optional
     /**
      * @template U
      * @param U $value
-	 * @phpstan-assert !null $value
+     * @phpstan-assert !null $value
      * @return Optional<U>
      */
     public static function of(mixed $value): Optional
     {
-		if ($value === null) {
-			throw new \LogicException('The value souldn\'t be null');
-		}
-		
+        if ($value === null) {
+            throw new \LogicException("The value souldn't be null");
+        }
+
         return new self($value);
     }
 
@@ -42,7 +44,7 @@ class Optional
      */
     public static function ofNullable($value): Optional
     {
-		return $value !== null ? self::of($value) : self::empty();
+        return $value !== null ? self::of($value) : self::empty();
     }
 
     /**
@@ -50,10 +52,10 @@ class Optional
      */
     public static function empty(): Optional
     {
-		/** @var self<never> $never */
-		$never = new self();
-		
-		return $never;
+        /** @var self<never> $never */
+        $never = new self();
+
+        return $never;
     }
 
     /**
@@ -73,46 +75,47 @@ class Optional
         }
     }
 
-	/**
-	 * @return T
-	 */
-	public function get(): mixed
-	{
-		if ($this->value === null) {
-			throw new \LogicException('value is empty');
-		}
+    /**
+     * @return T
+     */
+    public function get(): mixed
+    {
+        if ($this->value === null) {
+            throw new \LogicException('value is empty');
+        }
 
-		return $this->value;
-	}
+        return $this->value;
+    }
 
     /**
-	 * @template U
+     * @template U
      * @param U $defaultValue
-	 *
+     *
+     * @return-phpstan (T is null ? U : T)
      * @return T|U
      */
     public function orElse($defaultValue): mixed
     {
-		if ($defaultValue === null) {
-			throw new \LogicException('The default value shouldn\'t be null');
-		}
-		
-		return $this->value !== null ? $this->value : $defaultValue;
+        if ($defaultValue === null) {
+            throw new \LogicException("The default value shouldn't be null");
+        }
+
+        return $this->value !== null ? $this->value : $defaultValue;
     }
 
-    /** 
+    /**
      * @template E of \Throwable
      * @param E $exception
      * @throws E
-     * 
-     * @return T 
+     *
+     * @return T
      */
     public function orElseThrow(\Throwable $exception): mixed
     {
-		if ($this->value) {
+        if ($this->value) {
             return $this->value;
         }
-		
+
         throw $exception;
     }
 
@@ -124,6 +127,6 @@ class Optional
      */
     public function map(callable $mapper): Optional
     {
-		return $this->value !== null ? self::of($mapper($this->value)) : self::empty();
+        return $this->value !== null ? self::of($mapper($this->value)) : self::empty();
     }
 }

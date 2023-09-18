@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator\Opml;
 
 use DOMElement;
 use Gcanal\FeedCreator\Optional;
 
-class Feed
+final class Feed
 {
     /** @var Outline[] */
     public readonly array $outlines;
@@ -13,14 +15,13 @@ class Feed
     public function __construct(
         public readonly string $title,
         Outline ...$outlines,
-    )
-    {
+    ) {
         $this->outlines = $outlines;
     }
 
     public static function fromString(string $opml): self
     {
-        $toInt = static fn(string $v): int => (int) $v;
+        $toInt = static fn (string $v): int => (int) $v;
 
         $dom = new \DOMDocument();
         $dom->loadXML($opml);
@@ -28,7 +29,7 @@ class Feed
         return new self(
             $dom->getElementsByTagName('title')->item(0)?->nodeValue ?? 'Feed subscriptions',
             ...array_map(
-                static fn(DOMElement $node): Outline => new Outline(
+                static fn (DOMElement $node): Outline => new Outline(
                     $node->getAttribute('text'),
                     $node->getAttribute('xmlUrl'),
                     $node->getAttribute('htmlUrl'),

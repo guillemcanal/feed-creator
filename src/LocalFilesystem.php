@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator;
 
-class LocalFilesystem implements Filesystem
+final class LocalFilesystem implements Filesystem
 {
     public function getContents(string $filename): string
     {

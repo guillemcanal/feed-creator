@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator;
 
-class Entry
+final class Entry
 {
     /**
      * @param Optional<string> $description
@@ -12,7 +14,6 @@ class Entry
         public readonly string             $link,
         public readonly Optional           $description,
         public readonly \DateTimeImmutable $creationDate,
-    )
-    {
+    ) {
     }
 }

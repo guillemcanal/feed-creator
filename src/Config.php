@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator;
 
 use Gcanal\FeedCreator\Extractor\DateExtractor;
@@ -8,7 +10,7 @@ use Gcanal\FeedCreator\Extractor\HtmlExtractor;
 use Gcanal\FeedCreator\Extractor\ValueExtractor;
 use Gcanal\FeedCreator\Extractor\Extractor;
 
-class Config
+final class Config
 {
     /**
      * @param array<Provider> $providers
@@ -17,8 +19,7 @@ class Config
     public function __construct(
         public readonly array $providers,
         public readonly array $urls,
-    )
-    {
+    ) {
     }
 
     public function getProviderFrom(string $url): Provider
@@ -38,13 +39,14 @@ class Config
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \LogicException(\json_last_error_msg(), \json_last_error());
         }
+
         if (!is_array($data)) {
             throw new \InvalidArgumentException('Expected array');
         }
 
         return new self(
             array_map(
-                static fn (array $provider) => new Provider(
+                static fn (array $provider): Provider => new Provider(
                     matcher: new Matcher($provider['match'] ?? throw new \LogicException('You must provide a matcher')),
                     feedTitle: self::toExtractor('feedTitle', $provider),
                     items: self::toExtractor('items', $provider),
@@ -56,7 +58,7 @@ class Config
                 $data['providers'] ?? [],
             ),
             array_map(
-                static function (string $url) {
+                static function (string $url): string {
                     return $url;
                 },
                 $data['urls'] ?? [],
@@ -66,11 +68,11 @@ class Config
 
     /**
      * @param array<string, array{selector: string, attr?: string, dateFormat?: string, template?: string}> $data
-     * 
+     *
      * @phpstan-return (
-     *      $name is 'items' ? ElementsExtractor : 
-     *      $name is 'date' ? DateExtractor : 
-     *      $name is 'description' ? HtmlExtractor : 
+     *      $name is 'items' ? ElementsExtractor :
+     *      $name is 'date' ? DateExtractor :
+     *      $name is 'description' ? HtmlExtractor :
      *      ValueExtractor
      * )
      */

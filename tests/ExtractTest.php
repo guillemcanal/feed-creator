@@ -5,6 +5,7 @@ namespace Gcanal\FeedCreator;
 use Laminas\Feed\Reader\Entry\EntryInterface;
 use Laminas\Feed\Reader\Reader;
 use PHPUnit\Framework\TestCase;
+
 use function PHPUnit\Framework\assertThat;
 use function PHPUnit\Framework\containsOnlyInstancesOf;
 use function PHPUnit\Framework\countOf;

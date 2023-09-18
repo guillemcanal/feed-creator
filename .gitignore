@@ -1,5 +1,6 @@
 /.phpunit.*
 /.phpstan.*
+/.php-cs-fixer.cache
 /vendor
 /.idea
 /config.json

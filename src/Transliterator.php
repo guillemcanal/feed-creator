@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator;
 
-class Transliterator
+final class Transliterator
 {
     public static function slugify(string $string): string
     {

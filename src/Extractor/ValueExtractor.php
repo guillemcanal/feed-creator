@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator\Extractor;
 
 use Gcanal\FeedCreator\Optional;
@@ -8,19 +10,20 @@ use Symfony\Component\DomCrawler\Crawler;
 /**
  * @implements Extractor<string>
  */
-class ValueExtractor implements Extractor
+final class ValueExtractor implements Extractor
 {
     public function __construct(
         public readonly ?string $selector,
         public readonly ?string $attr = null,
-    ) {}
+    ) {
+    }
 
     public function extractFrom(Crawler $crawler): Optional
     {
         if (!$this->selector) {
             return Optional::empty();
         }
-        
+
         try {
             $node = $crawler->filter($this->selector);
             $value = $node->text();
@@ -29,11 +32,11 @@ class ValueExtractor implements Extractor
             }
 
             return Optional::of($value);
-        } catch (\Throwable $e) {
+        } catch (\Throwable $throwable) {
             throw new \LogicException(
                 sprintf('Unable to extract %s from %s', $this->selector, $crawler->html()),
-                $e->getCode(),
-                $e,
+                $throwable->getCode(),
+                $throwable,
             );
         }
     }

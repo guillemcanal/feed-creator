@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator;
 
 use Gcanal\FeedCreator\Opml as Opml;
 use Laminas\Feed\Reader\Reader;
 
-class FeedsDumper
+final class FeedsDumper
 {
     private Filesystem $filesystem;
 
     public function __construct(
         private readonly Config $config,
         private readonly string $feedsDirectory,
+        private readonly string $baseURL,
         ?Filesystem $filesystem = null,
     ) {
         if (!file_exists($feedsDirectory) || !is_dir($feedsDirectory)) {
-            throw new \InvalidArgumentException($feedsDirectory . ' doesn\'t exist.');
+            throw new \InvalidArgumentException($feedsDirectory . " doesn't exist.");
         }
 
         $this->filesystem = $filesystem ?? new LocalFilesystem();
@@ -23,7 +26,7 @@ class FeedsDumper
 
     public function dump(): void
     {
-        /** @var Feed[] */
+        /** @var Feed[] $feeds */
         $feeds = [];
         foreach ($this->config->urls as $url) {
             $creator = new FeedCreator($this->config->getProviderFrom($url), $this->filesystem);
@@ -41,9 +44,9 @@ class FeedsDumper
         $opml = new Opml\Feed(
             'Feed subcriptions',
             ...array_map(
-                fn(Feed $feed): Opml\Outline => new Opml\Outline(
+                fn (Feed $feed): Opml\Outline => new Opml\Outline(
                     title: $feed->title,
-                    xmlUrl: $this->getFeedFilename($feed),
+                    xmlUrl: $this->getFeedUrl($feed),
                     htmlUrl: $feed->link,
                     scanDelay: Optional::of(90)
                 ),
@@ -52,9 +55,14 @@ class FeedsDumper
         );
 
         $this->filesystem->putContents(
-            $this->feedsDirectory . '/subscrptions.opml',
+            $this->feedsDirectory . '/subscriptions.opml',
             $opml->toXML(),
         );
+    }
+
+    private function getFeedUrl(Feed $feed): string
+    {
+        return $this->baseURL . '/' . Transliterator::slugify($feed->title) . '.atom';
     }
 
     private function getFeedFilename(Feed $feed): string
@@ -74,7 +82,12 @@ class FeedsDumper
             <title>Feeds</title>
         </head>
         <body>
-            <table>%s</table>
+            <table>
+                <tr>
+                    <td colspan="2"><a href="./subscriptions.opml">OPML Feed</a></td>
+                </tr>
+                %s
+            </table>
         </body>
         </html>
         HTML;
@@ -100,12 +113,14 @@ class FeedsDumper
                 $entry,
                 './'.$fileInfo->getFilename(),
                 $reader->getTitle(),
-                $reader->getDateModified()?->format(\DateTime::ATOM) ?? '',
+                $reader->getDateModified()?->format(\DateTimeInterface::ATOM) ?? '',
                 $reader->getDateModified()?->format('Y-m-d H:i:s') ?? '',
             );
         }
 
-        $content = sprintf($html, implode(PHP_EOL, $entries));
-        $this->filesystem->putContents($this->feedsDirectory . '/index.html', $content);
+        $this->filesystem->putContents(
+            $this->feedsDirectory . '/index.html',
+            sprintf($html, implode(PHP_EOL, $entries)),
+        );
     }
 }

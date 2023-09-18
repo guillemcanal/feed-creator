@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gcanal\FeedCreator\Extractor;
 
 use Gcanal\FeedCreator\Optional;
