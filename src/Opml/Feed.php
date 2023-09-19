@@ -46,6 +46,9 @@ final class Feed
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
 
+        $xsl = $dom->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="./../opml-feed.xsl"');
+        $dom->appendChild($xsl);
+
         $opml = $dom->createElement('opml');
         $opml->setAttribute('version', '2.0');
 

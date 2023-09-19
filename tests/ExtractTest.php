@@ -18,10 +18,11 @@ class ExtractTest extends TestCase
     public function itCanParseAWebPageAndGenerateAFeed(): void
     {
         $testPage = 'file://'.__DIR__.'/fixtures/demo.html';
+        $feedURL = 'https://example.com/feeds';
         $jsonConfig = __DIR__.'/fixtures/config.json';
 
         $provider = Config::fromJSONFile($jsonConfig)->getProviderFrom($testPage);
-        $feed = (new FeedCreator($provider))->getFeed($testPage);
+        $feed = (new FeedCreator($provider))->getFeed($testPage, $feedURL);
 
         assertThat($feed->title, equalTo('Page title'));
         assertThat($feed->entries, countOf(3));
@@ -39,10 +40,11 @@ class ExtractTest extends TestCase
     public function itCanGenerateAnAtomFeed(): void
     {
         $testPage = 'file://'.__DIR__.'/fixtures/demo.html';
+        $feedURL = 'https://example.com/feeds';
         $jsonConfig = __DIR__.'/fixtures/config.json';
 
         $provider = Config::fromJSONFile($jsonConfig)->getProviderFrom($testPage);
-        $feed = (new FeedCreator($provider))->getFeed($testPage);
+        $feed = (new FeedCreator($provider))->getFeed($testPage, $feedURL);
         $atomFeed = Reader::importString($feed->toAtom());
 
         assertThat($atomFeed->getTitle(), equalTo('Page title'));

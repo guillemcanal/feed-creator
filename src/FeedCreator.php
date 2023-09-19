@@ -11,7 +11,7 @@ use Symfony\Component\DomCrawler\UriResolver;
 final class FeedCreator
 {
     public function __construct(
-        private readonly Provider    $provider,
+        private readonly Provider   $provider,
         private readonly Filesystem $filesystem = new LocalFilesystem(),
     ) {
     }
@@ -19,16 +19,19 @@ final class FeedCreator
     /**
      * @throws LogicException When a value cannot be extracted
      */
-    public function getFeed(string $pageURL): Feed
+    public function getFeed(string $pageURL, string $baseURL): Feed
     {
         $crawler = new Crawler($this->filesystem->getContents($pageURL));
         $resolveURL = static fn (string $url): string => UriResolver::resolve($url, $pageURL);
 
+        $feedTitle = $this->provider->feedTitle
+            ->extractFrom($crawler)
+            ->orElseThrow(new LogicException("Unable to extract feed's title"));
+
         return new Feed(
-            title: $this->provider->feedTitle
-                ->extractFrom($crawler)
-                ->orElseThrow(new LogicException("Unable to extract feed's title")),
+            title: $feedTitle,
             link: $pageURL,
+            url: $baseURL.'/'.Transliterator::slugify($feedTitle).'.xml',
             entries: array_map(
                 fn (Crawler $item): Entry => new Entry(
                     title: $this->provider->title

@@ -74,12 +74,10 @@ jobs:
           BASE_URL: ${{ vars.BASE_URL }}
         run: |
           export SECRET_HASH=$(echo -n $PASSWORD | sha1sum | awk '{print $1}')
-          export FEEDS_DIRECTORY=./docs/$SECRET_HASH
+          export FEEDS_DIRECTORY=./index/$SECRET_HASH
           export BASE_URL=$BASE_URL/$SECRET_HASH
           echo $CONFIG | base64 --decode --ignore-garbage > config.json
-          mkdir -p ./docs/$SECRET_HASH
-          touch ./docs/.nojekyll
-          cp ./index.password.html ./docs/index.html
+          mkdir -p ./index/$SECRET_HASH
           composer dump-feeds
 
       - name: Setup Pages
@@ -88,8 +86,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './docs'
+          path: './index'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+
+      - name: Delete Github Pages artifact
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: github-pages
