@@ -17,13 +17,33 @@
       <body>
         <section>
           <div class="alert">
-            <p><strong>This is an OPML containing feed subscriptions</strong>. <strong>Subscribe to each on of them</strong> by copying the URL from the address bar into your newsreader app.</p>
+            <p><strong>This is an OPML file</strong> containing feed subscriptions. <strong>Download</strong> this file and import it into your newsreader app.</p>
+            <p><button id="download">Download</button></p>
           </div>
         </section>
         <section>
           <h2>Feed subscriptions</h2>
           <xsl:apply-templates select="//outline"/>
         </section>
+        <script type="text/javascript">
+          const fetchAndDownloadXML = () => fetch(window.location.href)
+              .then(response => response.text())
+              .then(xmlData => download(xmlData));
+
+          const download = xmlData => {
+              const blob = new Blob([xmlData], { type: 'text/xml' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+
+              a.href = url;
+              a.download = 'subscriptions.xml';
+              a.click();
+
+              URL.revokeObjectURL(url);
+          };
+
+          document.getElementById('download').addEventListener('click', fetchAndDownloadXML);
+      </script>
       </body>
     </html>
   </xsl:template>
