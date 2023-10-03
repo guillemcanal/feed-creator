@@ -23,6 +23,8 @@ final class Transliterator
         /** @var \Transliterator $transliterator  */
         $transliterator = \Transliterator::createFromRules($rules);
 
-        return $transliterator->transliterate($string) ?: throw new \RuntimeException('Cannot slugify ' . $string);
+        return ($slug = $transliterator->transliterate($string)) !== false 
+            ? $slug 
+            : throw new \RuntimeException('Cannot slugify ' . $string);
     }
 }

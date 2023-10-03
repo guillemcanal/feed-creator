@@ -61,7 +61,7 @@ final class FeedsDumper
     private function getFeedFilename(Feed $feed): string
     {
         $path = parse_url($feed->url, PHP_URL_PATH);
-        if (!$path) {
+        if (!is_string($path)) {
             throw new \RuntimeException('Unable to extract feed path from ' . $feed->url);
         }
 

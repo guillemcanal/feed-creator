@@ -21,7 +21,7 @@ final class DateExtractor implements Extractor
 
     public function extractFrom(Crawler $crawler): Optional
     {
-        if (!$this->selector) {
+        if ($this->selector === null) {
             return Optional::empty();
         }
 
@@ -32,7 +32,7 @@ final class DateExtractor implements Extractor
 
     private function toDate(string $value): \DateTimeImmutable
     {
-        return $this->dateFormat
+        return $this->dateFormat !== null
             ? (
                 \DateTimeImmutable::createFromFormat($this->dateFormat, $value)
                 ?: throw new \RuntimeException(

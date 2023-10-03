@@ -1,4 +1,6 @@
 parameters:
+	strictRules:
+		allRules: true
 	tmpDir: .phpstan.cache
 	level: 9
 	paths:

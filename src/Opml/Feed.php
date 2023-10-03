@@ -21,8 +21,6 @@ final class Feed
 
     public static function fromString(string $opml): self
     {
-        $toInt = static fn (string $v): int => (int) $v;
-
         $dom = new \DOMDocument();
         $dom->loadXML($opml);
 
@@ -33,7 +31,8 @@ final class Feed
                     $node->getAttribute('text'),
                     $node->getAttribute('xmlUrl'),
                     $node->getAttribute('htmlUrl'),
-                    Optional::ofNullable($node->getAttribute('scanDelay') ?: '90')->map($toInt),
+                    Optional::ofNonEmptyString($node->getAttribute('scanDelay'))
+                        ->map(static fn($value): int => (int) $value),
                 ),
                 iterator_to_array($dom->getElementsByTagName('outline')),
             )
@@ -67,7 +66,12 @@ final class Feed
             $outline->setAttribute('type', 'rss');
             $outline->setAttribute('xmlUrl', $outlineData->xmlUrl);
             $outline->setAttribute('htmlUrl', $outlineData->htmlUrl);
-            $outline->setAttribute('scanDelay', (string) $outlineData->scanDelay->orElse('90'));
+            $outline->setAttribute(
+                'scanDelay',
+                $outlineData->scanDelay
+                    ->map(static fn($value): string => (string) $value)
+                    ->orElseGet(''),
+            );
             $body->appendChild($outline);
         }
 

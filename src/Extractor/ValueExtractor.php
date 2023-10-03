@@ -20,14 +20,14 @@ final class ValueExtractor implements Extractor
 
     public function extractFrom(Crawler $crawler): Optional
     {
-        if (!$this->selector) {
+        if ($this->selector === null) {
             return Optional::empty();
         }
 
         try {
             $node = $crawler->filter($this->selector);
             $value = $node->text();
-            if ($this->attr) {
+            if ($this->attr !== null) {
                 $value = $node->attr($this->attr) ?? '';
             }
 

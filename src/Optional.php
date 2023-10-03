@@ -15,7 +15,7 @@ final class Optional
     private $value;
 
     /**
-     * @param T $value
+     * @param T|never $value
      */
     private function __construct($value = null)
     {
@@ -25,7 +25,7 @@ final class Optional
     /**
      * @template U
      * @param U $value
-     * @phpstan-assert !null $value
+     *
      * @return Optional<U>
      */
     public static function of(mixed $value): Optional
@@ -40,11 +40,20 @@ final class Optional
     /**
      * @template U
      * @param U $value
+     *
      * @return Optional<U>
      */
     public static function ofNullable($value): Optional
     {
         return $value !== null ? self::of($value) : self::empty();
+    }
+
+    /**
+     * @phpstan-return $value is '' ? Optional<null> : Optional<non-empty-string>
+     */
+    public static function ofNonEmptyString(string $value): Optional
+    {
+        return $value !== '' ? self::of($value) : self::empty();
     }
 
     /**
@@ -70,7 +79,7 @@ final class Optional
 
     public function ifPresent(callable $fn): void
     {
-        if ($this->value) {
+        if ($this->value !== null) {
             $fn($this->value);
         }
     }
@@ -91,10 +100,24 @@ final class Optional
      * @template U
      * @param U $defaultValue
      *
-     * @return-phpstan (T is null ? U : T)
-     * @return T|U
+     * @phpstan-return (T is null ? self<U> : self<T>)
      */
-    public function orElse($defaultValue): mixed
+    public function orElse($defaultValue): Optional
+    {
+        if ($defaultValue === null) {
+            throw new \LogicException("The default value shouldn't be null");
+        }
+
+        return $this->value !== null ? $this : new self($defaultValue);
+    }
+
+    /**
+     * @template U
+     * @param U $defaultValue
+     *
+     * @phpstan-return (T is null ? U : T)
+     */
+    public function orElseGet($defaultValue): mixed
     {
         if ($defaultValue === null) {
             throw new \LogicException("The default value shouldn't be null");
@@ -112,17 +135,17 @@ final class Optional
      */
     public function orElseThrow(\Throwable $exception): mixed
     {
-        if ($this->value) {
+        if ($this->value !== null) {
             return $this->value;
         }
 
         throw $exception;
     }
 
-
     /**
      * @template U
      * @param callable(T): U $mapper
+     *
      * @return Optional<U>
      */
     public function map(callable $mapper): Optional

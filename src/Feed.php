@@ -23,8 +23,8 @@ final class Feed
         public readonly string $url,
         public readonly array  $entries,
     ) {
-        $entry = current($this->entries);
-        $this->dateModified = $entry ? $entry->creationDate : new \DateTimeImmutable();
+        $entry = current($this->entries) ?: null;
+        $this->dateModified = $entry !== null ? $entry->creationDate : new \DateTimeImmutable();
     }
 
     public function toAtom(): string

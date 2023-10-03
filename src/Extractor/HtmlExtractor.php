@@ -21,18 +21,19 @@ final class HtmlExtractor implements Extractor
 
     public function extractFrom(Crawler $crawler): Optional
     {
-        if (!$this->selector) {
+        if ($this->selector === null) {
             return Optional::empty();
         }
 
         try {
             $value = $crawler->filter($this->selector);
-            if ($this->attr) {
+            if ($this->attr !== null) {
                 $value = $value->attr($this->attr);
-                if ($this->template) {
+                if ($this->template !== null) {
                     $value = sprintf($this->template, $value);
                 }
-            } else {
+            }
+            if ($value instanceof Crawler) {
                 $value = $value->outerHtml();
             }
         } catch (\Throwable $throwable) {
@@ -43,6 +44,6 @@ final class HtmlExtractor implements Extractor
             );
         }
 
-        return $value ? Optional::of($value) : Optional::empty();
+        return $value !== null ? Optional::of($value) : Optional::empty();
     }
 }
