@@ -79,18 +79,22 @@ jobs:
           echo $CONFIG | base64 --decode --ignore-garbage > config.json
           mkdir -p ./index/$SECRET_HASH
           composer dump-feeds
-
+        if: contains(fromJSON('["schedule", "workflow_dispatch"]'), github.event_name)
+      
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      
+        if: contains(fromJSON('["schedule", "workflow_dispatch"]'), github.event_name)
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           path: './index'
+        if: contains(fromJSON('["schedule", "workflow_dispatch"]'), github.event_name)
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+        if: contains(fromJSON('["schedule", "workflow_dispatch"]'), github.event_name)
 
       - name: Delete Github Pages artifact
         uses: geekyeggo/delete-artifact@v2

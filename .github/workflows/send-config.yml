@@ -1,0 +1,29 @@
+name: Send config
+
+on:
+  workflow_dispatch:
+
+jobs:
+  send_config:
+    name: Send Config
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dump config
+        env:
+          CONFIG: ${{ secrets.CONFIG }}
+        run: |
+          echo $CONFIG | base64 --decode --ignore-garbage > config.json
+
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.protonmail.ch
+          server_port: 587
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: Github Config
+          body: Attached a copy of the config file
+          to: ${{secrets.MAIL_TO}}
+          from: Github Actions
+          attachments: config.json
