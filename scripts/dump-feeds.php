@@ -11,7 +11,7 @@ if (!file_exists($config)) {
     exit(2);
 }
 
-$configData = json_decode(file_get_contents($config));
+$configData = json_decode(file_get_contents($config) ?: '');
 $validator = new JsonSchema\Validator();
 $validator->validate(
     $configData,
