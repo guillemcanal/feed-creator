@@ -66,5 +66,4 @@ This process is scheduled to run daily at 4 AM, 10 AM, and 4 PM.
 }
 ```
 
-...
-
+Plop.

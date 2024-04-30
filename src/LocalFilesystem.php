@@ -8,7 +8,16 @@ final class LocalFilesystem implements Filesystem
 {
     public function getContents(string $filename): string
     {
-        return @file_get_contents($filename) ?: throw new \RuntimeException('Unable to retreive ' . $filename);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $filename);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible;)');
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $response;
     }
 
     public function putContents(string $filename, string $data): void
